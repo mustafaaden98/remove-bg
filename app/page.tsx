@@ -36,6 +36,7 @@ export default function Page() {
   const [message, setMessage] = useState<{ type: 'info' | 'success' | 'error'; text: string } | null>(null);
   const [authenticated, setAuthenticated] = useState(false);
   const [password, setPassword] = useState<string>('');
+  const [name, setName] = useState<string>('');
 
 
   // Keep a single worker instance
@@ -49,12 +50,15 @@ export default function Page() {
   }, [previewURL, resultURL]);
 
   useEffect(() => {
+    const name = prompt("Enter you name:") as string;
     const input = prompt('Enter password:') as string;
+  
     // console.log('input', input, process.env.NEXT_PUBLIC_ACCESS_PASSWORD)
     setPassword(input)
     if (input.toLowerCase() === process.env.NEXT_PUBLIC_ACCESS_PASSWORD) {
       setAuthenticated(true);
       setPassword(input);
+      setName(name);
     } else {
       setPassword('');
       alert('Wrong password!');
@@ -135,7 +139,8 @@ export default function Page() {
       setProgress(65);
       const fd = new FormData();
       fd.append('file', blob, 'input.png');
-      fd.append('password', password);
+      fd.append('password', password.toLowerCase());
+      fd.append('name', name);
 
       const res = await fetch('/api/remove-bg', { method: 'POST', body: fd });
       setProgress(85);
@@ -150,6 +155,17 @@ export default function Page() {
         return url;
       });
       setMessage({ type: 'success', text: 'Processed via server (direct API)' });
+      try {
+        const nameForLog = name?.trim() || 'Anonymous';
+        await fetch("/api/send-message", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: nameForLog })
+        })
+      }
+      catch(error: unknown){
+        console.error(error);
+      }
     } catch (err: any) {
       console.error(err);
       setMessage({ type: 'error', text: err?.message || 'Server processing failed' });
