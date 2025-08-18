@@ -46,7 +46,8 @@ import type {
     // Run inference
     const result = await pipe(blob);
     const out = Array.isArray(result) ? result[0] : result; // now definitely RawImage
-    const rgba = new Uint8ClampedArray(out.data.buffer);
+    const rgba = new Uint8ClampedArray(out.width * out.height * 4);
+    rgba.set(out.data as Uint8Array); // copy bytes
   
     // Paint to OffscreenCanvas and export PNG
     const canvas = new OffscreenCanvas(out.width, out.height);
