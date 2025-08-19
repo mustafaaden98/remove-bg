@@ -39,7 +39,6 @@ import type {
       
         pipe = (await makePipe('background-removal', 'briaai/RMBG-1.4', opts)) as BackgroundRemovalPipeline;
       }
-      const device = useWebGPU && 'gpu' in navigator ? 'webgpu' : undefined;
       // dtype is optional; fp16 helps on many GPUs, harmless elsewhere
     
   

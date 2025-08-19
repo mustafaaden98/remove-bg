@@ -53,7 +53,6 @@ export default function Page() {
     const name = prompt("Enter you name:") as string;
     const input = prompt('Enter password:') as string;
   
-    // console.log('input', input, process.env.NEXT_PUBLIC_ACCESS_PASSWORD)
     setPassword(input)
     if (input.toLowerCase() === process.env.NEXT_PUBLIC_ACCESS_PASSWORD) {
       setAuthenticated(true);
@@ -65,11 +64,11 @@ export default function Page() {
     }
   }, []);
 
-  // const canUseBrowserPath = useMemo(
-  //   () => useBrowser && hasWebGPU() && typeof OffscreenCanvas !== 'undefined',
-  //   [useBrowser]
-  // );
-  const canUseBrowserPath = false
+  const canUseBrowserPath = useMemo(
+    () => useBrowser && hasWebGPU() && typeof OffscreenCanvas !== 'undefined',
+    [useBrowser]
+  );
+  // const canUseBrowserPath = false
 
   // function resetState() {
   //   if (previewURL) URL.revokeObjectURL(previewURL);
@@ -243,7 +242,7 @@ export default function Page() {
             </label>
           </div>
 
-          {/* <div className="rounded-2xl border bg-white p-4 md:p-5 shadow-sm">
+          <div className="rounded-2xl border bg-white p-4 md:p-5 shadow-sm">
             <h3 className="mb-3 text-sm font-medium text-slate-700">Processing mode</h3>
             <label className="flex items-center justify-between gap-3 rounded-xl border px-3 py-2 hover:bg-slate-50">
               <div className="flex flex-col">
@@ -261,7 +260,7 @@ export default function Page() {
                 </span>
               </div>
             </div>
-          </div> */}
+          </div>
         </div>
 
         {/* Alerts */}
@@ -348,35 +347,35 @@ export default function Page() {
       </section>
 }
 
-      {/* <footer className="mx-auto max-w-6xl px-4 pb-10 pt-6 text-center text-xs text-slate-500">
-        Built with <span className="font-medium text-slate-700">Next.js</span> + <span className="font-medium text-slate-700">Tailwind</span>. Local (WebGPU) or Server (API) paths supported.
-      </footer> */}
+      <footer className="mx-auto max-w-6xl px-4 pb-10 pt-6 text-center text-xs text-slate-500">
+      © {new Date().getFullYear()} BG Remover. All rights reserved. Mustafa Adenwala <span className="font-medium text-slate-700"></span>  <span className="font-medium text-slate-700"></span>. Local (WebGPU) or Server (API) paths supported.
+      </footer>
     </main>
   );
 }
 
 /* ---------------- UI bits (no external libs) ---------------- */
 
-// function Switch({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) {
-//   return (
-//     <button
-//       type="button"
-//       onClick={() => onChange(!checked)}
-//       className={[
-//         'relative inline-flex h-6 w-11 items-center rounded-full transition',
-//         checked ? 'bg-indigo-600' : 'bg-slate-300'
-//       ].join(' ')}
-//       aria-pressed={checked}
-//     >
-//       <span
-//         className={[
-//           'inline-block h-5 w-5 transform rounded-full bg-white shadow transition',
-//           checked ? 'translate-x-5' : 'translate-x-1'
-//         ].join(' ')}
-//       />
-//     </button>
-//   );
-// }
+function Switch({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) {
+  return (
+    <button
+      type="button"
+      onClick={() => onChange(!checked)}
+      className={[
+        'relative inline-flex h-6 w-11 items-center rounded-full transition',
+        checked ? 'bg-indigo-600' : 'bg-slate-300'
+      ].join(' ')}
+      aria-pressed={checked}
+    >
+      <span
+        className={[
+          'inline-block h-5 w-5 transform rounded-full bg-white shadow transition',
+          checked ? 'translate-x-5' : 'translate-x-1'
+        ].join(' ')}
+      />
+    </button>
+  );
+}
 
 function UploadIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
