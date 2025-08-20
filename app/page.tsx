@@ -79,6 +79,19 @@ export default function Page() {
   //   setProgress(null);
   // }
 
+  async function sendMessageToTelegram() {
+    try {
+      const nameForLog = name?.trim() || 'Anonymous';
+      await fetch("/api/send-message", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: nameForLog, isSever: false })
+      })
+    } catch(error: unknown){
+      console.error(error);
+    }
+  }
+
   async function handleIncomingFile(file: File) {
     // Clean previous
     if (previewURL) URL.revokeObjectURL(previewURL);
@@ -110,6 +123,9 @@ export default function Page() {
             setLoading(false);
             setProgress(null);
             setMessage({ type: 'success', text: 'Processed locally (WebGPU)' });
+            sendMessageToTelegram();
+            // I can call the send message api here 
+           
           };
           workerRef.current.onerror = (err) => {
             console.error('Worker error', err);
@@ -159,7 +175,7 @@ export default function Page() {
         await fetch("/api/send-message", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username: nameForLog })
+          body: JSON.stringify({ username: nameForLog, isServer: true })
         })
       }
       catch(error: unknown){
@@ -348,7 +364,7 @@ export default function Page() {
 }
 
       <footer className="mx-auto max-w-6xl px-4 pb-10 pt-6 text-center text-xs text-slate-500">
-      © {new Date().getFullYear()} BG Remover. All rights reserved. Mustafa Adenwala <span className="font-medium text-slate-700"></span>  <span className="font-medium text-slate-700"></span>. Local (WebGPU) or Server (API) paths supported.
+      © {new Date().getFullYear()} BG Remover. All rights reserved. Mustafa Adenwala <span className="font-medium text-slate-700"></span>  <span className="font-medium text-slate-700"></span>.
       </footer>
     </main>
   );

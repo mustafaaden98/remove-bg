@@ -1,7 +1,9 @@
 export const runtime = 'nodejs'; // Ensures Node.js runtime
 
 export async function POST(request: Request) {
-  const { username } = await request.json();
+  const { username, isServer } = await request.json();
+
+  console.log('isServer', isServer)
 
 
   const TELEGRAM_API_URL = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`;
@@ -9,6 +11,7 @@ export async function POST(request: Request) {
   const textMessage = `
   📢 *New user send an api request*
   👤 Username: ${username}
+      and background is removed by ${isServer ? 'server api' : 'transformer.js'}
       `;
 
   try {
